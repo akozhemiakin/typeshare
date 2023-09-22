@@ -44,6 +44,9 @@ fn get_dependencies_from_type(
                 get_dependencies_from_type(kt, types, res, seen);
                 get_dependencies_from_type(vt, types, res, seen);
             }
+            SpecialRustType::HashSet(vt) => {
+                get_dependencies_from_type(vt, types, res, seen);
+            }
             SpecialRustType::Option(inner) => {
                 get_dependencies_from_type(inner, types, res, seen);
             }

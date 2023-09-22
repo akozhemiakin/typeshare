@@ -245,6 +245,9 @@ impl TryFrom<&syn::Type> for RustType {
                             params.next().unwrap().into(),
                         ))
                     }
+                    "HashSet" => Self::Special(SpecialRustType::HashSet(
+                        parameters.into_iter().next().unwrap().into(),
+                    )),
                     "str" | "String" => Self::Special(SpecialRustType::String),
                     // Since we do not need to box types in other languages, we treat this type
                     // as its inner type.
