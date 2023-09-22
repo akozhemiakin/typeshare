@@ -188,6 +188,7 @@ impl Language for Swift {
                 self.format_type(rtype1, generic_types)?,
                 self.format_type(rtype2, generic_types)?
             ),
+            SpecialRustType::HashSet(_) => todo!(),
             SpecialRustType::Unit => {
                 self.should_emit_codable_void.store(true, Ordering::SeqCst);
                 "CodableVoid".into()

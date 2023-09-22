@@ -139,6 +139,8 @@ pub enum SpecialRustType {
     Slice(Box<RustType>),
     /// Represents `HashMap<K, V>` from the standard library
     HashMap(Box<RustType>, Box<RustType>),
+    /// Represents `HashSet<V> from the standard library`
+    HashSet(Box<RustType>),
     /// Represents `Option<T>` from the standard library
     Option(Box<RustType>),
     /// Represents `()`
@@ -387,6 +389,7 @@ impl SpecialRustType {
                 rty.contains_type(ty)
             }
             Self::HashMap(rty1, rty2) => rty1.contains_type(ty) || rty2.contains_type(ty),
+            Self::HashSet(rty) => rty.contains_type(ty),
             Self::Unit
             | Self::String
             | Self::Char
@@ -419,6 +422,7 @@ impl SpecialRustType {
             Self::Slice(_) => "&[]",
             Self::Option(_) => "Option",
             Self::HashMap(_, _) => "HashMap",
+            Self::HashSet(_) => "HashSet",
             Self::String => "String",
             Self::Char => "char",
             Self::Bool => "bool",
@@ -446,6 +450,7 @@ impl SpecialRustType {
             Self::HashMap(rtype1, rtype2) => {
                 Box::new([rtype1.as_ref(), rtype2.as_ref()].into_iter())
             }
+            Self::HashSet(rtype) => Box::new(std::iter::once(rtype.as_ref())),
             Self::Unit
             | Self::String
             | Self::Char

@@ -56,6 +56,9 @@ impl Language for TypeScript {
                 },
                 self.format_type(rtype2, generic_types)?
             )),
+            SpecialRustType::HashSet(rtype) => {
+                Ok(format!("Set<{}>", self.format_type(rtype, generic_types)?))
+            }
             SpecialRustType::Unit => Ok("undefined".into()),
             SpecialRustType::String => Ok("string".into()),
             SpecialRustType::Char => Ok("string".into()),

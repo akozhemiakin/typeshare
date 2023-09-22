@@ -95,6 +95,7 @@ impl Language for Go {
                 self.format_type(rtype1, generic_types)?,
                 self.format_type(rtype2, generic_types)?
             ),
+            SpecialRustType::HashSet(_) => todo!(),
             SpecialRustType::Unit => "struct{}".into(),
             SpecialRustType::String => "string".into(),
             SpecialRustType::Char => "rune".into(),

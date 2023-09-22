@@ -96,6 +96,7 @@ impl Language for Scala {
                     self.format_type(rtype2, generic_types)?
                 )
             }
+            SpecialRustType::HashSet(_) => todo!(),
             SpecialRustType::Unit => "Unit".into(),
             SpecialRustType::String => "String".into(),
             // Char in Scala is 16 bits long, so we need to use String
