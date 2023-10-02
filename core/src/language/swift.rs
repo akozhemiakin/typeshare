@@ -9,7 +9,7 @@ use itertools::Itertools;
 use joinery::JoinableIterator;
 use lazy_format::lazy_format;
 use std::collections::BTreeSet;
-use std::io;
+use std::io::{self, ErrorKind};
 use std::{
     collections::HashMap,
     io::Write,
@@ -503,6 +503,16 @@ impl Language for Swift {
             ..
         } = e
         {
+            let content_key = content_key.as_ref().ok_or_else(|| {
+                std::io::Error::new(
+                    ErrorKind::Other,
+                    RustTypeFormatError::SerdeContentRequired {
+                        name: shared.id.to_string(),
+                        lang: "Swift".into(),
+                    },
+                )
+            })?;
+
             writeln!(
                 w,
                 r#"
@@ -572,6 +582,16 @@ impl Swift {
                 content_key,
                 shared,
             } => {
+                let content_key = content_key.as_ref().ok_or_else(|| {
+                    std::io::Error::new(
+                        ErrorKind::Other,
+                        RustTypeFormatError::SerdeContentRequired {
+                            name: shared.id.to_string(),
+                            lang: "Swift".into(),
+                        },
+                    )
+                })?;
+
                 let generics = &shared.generic_types;
                 for v in &shared.variants {
                     self.write_comments(w, 1, &v.shared().comments)?;
