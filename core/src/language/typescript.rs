@@ -47,7 +47,7 @@ impl Language for TypeScript {
             // We add optionality above the type formatting level
             SpecialRustType::Option(rtype) => self.format_type(rtype, generic_types),
             SpecialRustType::HashMap(rtype1, rtype2) => Ok(format!(
-                "Record<{}, {}>",
+                "Map<{}, {}>",
                 match rtype1.as_ref() {
                     RustType::Simple { id } if generic_types.contains(id) => {
                         return Err(RustTypeFormatError::GenericKeyForbiddenInTS(id.clone()));

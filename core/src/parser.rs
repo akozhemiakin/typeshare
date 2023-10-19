@@ -261,7 +261,7 @@ fn parse_enum(e: &ItemEnum) -> Result<RustItem, ParseError> {
     let maybe_tag_key = get_tag_key(&e.attrs);
     let maybe_content_key = get_content_key(&e.attrs);
 
-    let ts_union = get_ts_union(&e.attrs);
+    let ts_union = has_typeshare_meta_flag(&e.attrs, "ts_union");
 
     // Parse all of the enum's variants
     let variants = e
@@ -640,8 +640,8 @@ fn get_content_key(attrs: &[syn::Attribute]) -> Option<String> {
         .and_then(literal_as_string)
 }
 
-fn get_ts_union(attrs: &[syn::Attribute]) -> bool {
-    let ts_union = Ident::new("ts_union", Span::call_site());
+fn has_typeshare_meta_flag(attrs: &[syn::Attribute], flag: &str) -> bool {
+    let flag = Ident::new(flag, Span::call_site());
 
     attrs.iter().any(|attr| {
         get_typeshare_meta_items(attr)
@@ -649,7 +649,7 @@ fn get_ts_union(attrs: &[syn::Attribute]) -> bool {
             .any(|arg| match arg {
                 NestedMeta::Meta(Meta::Path(path)) => {
                     if let Some(ident) = path.get_ident() {
-                        *ident == ts_union
+                        *ident == flag
                     } else {
                         false
                     }
